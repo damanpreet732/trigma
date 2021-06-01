@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Form from './Form/Form'
+import Data from './Data/Data'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container p-5"> 
+      <div className="row">
+        <h1> CURD Operations </h1>
+      </div>
+      <hr 
+      // className="border border-danger" 
+      />
+      <div className="row">
+        <h2>Create & Update Data: </h2> 
+        <Form></Form>
+      </div>
+      <hr 
+      // className="border border-danger" 
+      />
+      <div className="row">
+        <h2>Read & Delete Data: </h2>
+        <Data></Data>
+      </div>
     </div>
   );
 }
