@@ -21,7 +21,7 @@ export default function Data () {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             // body: JSON.stringify({ id : id })
-            body: JSON.stringify({ id : id })
+            body: JSON.stringify({id : id })
         };
         fetch('http://localhost:8001/delete', requestOptions)
             .then(response => response.json())

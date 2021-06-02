@@ -19,12 +19,14 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use(express.json())
+
 app.get('/fetch',  (req, res) => {
     MongoClient.connect(url)
     .then((client) => {
         var db = client.db('mydb');
         var cars = db.collection('cars');
-        cars.find({}).limit(10).toArray((err, result) => {
+        cars.find({}).limit(10).sort({year:-1}).toArray((err, result) => {
             if (err) throw err;
             console.log("Fetched !!!!!!!!!!!!!!!!!!");
             res.send(result);        
@@ -34,36 +36,45 @@ app.get('/fetch',  (req, res) => {
 })
 
 app.post('/add' , (req,res) => {
-    console.log(req.body)
+    // console.log(req.body);
+    // res.send('Sucess');
     MongoClient.connect(url)
     .then((client) => {
         var db = client.db('mydb');
         var cars = db.collection('cars');
-        cars.insertOne(req.obj,(err,result) => {
+        cars.insertOne(req.body,(err,result) => {
             if(err) throw err ;
             res.send(result);
             console.log('Added !!!!!!!!!!!!!!!!');
-            // console.log(res.insertedCount);
         })
     })
     .catch(err => { throw err })
 })
 
 app.post('/delete', (req,res) => {
+    // console.log(req.body);
     MongoClient.connect(url)
     .then((client) => {
         var db = client.db('mydb');
         var cars = db.collection('cars');
-        cars.deleteOne(req.id,(err,obj) => {
+        cars.deleteOne({_id : new mongo.ObjectId(req.body.id)},(err,obj) => {
             if(err) throw err ;
-            // console.log(obj);
-            console.log(res);
             console.log("Deleted !!!!!!!!!!!!!!");
             res.send(obj);
         })
     })
     .catch(err => { throw err })
 })
+
+// MongoClient.connect(url)
+//     .then(client => {
+//         var db = client.db('mydb');
+//         var cars = db.collection('cars');
+//         cars.deleteMany({make : ''}, function(err, obj) {
+//             if (err) throw err;
+//             console.log("document deleted");
+//         })
+//     })
 
 
 var server = app.listen(8001, function () {
@@ -86,33 +97,6 @@ var server = app.listen(8001, function () {
     //     console.log(res.insertedCount);
     //     db.close() ;
     // })
-
-    // dbo.collection("cars").find({}).toArray(function(err, result) {
-    //     if (err) throw err;
-    //     console.log(result);
-    //     db.close();
-    // });
-
-    // var query = { model : 'S4' };
-    // dbo.collection("cars").find(query).toArray(function(err, result) {
-    //     if (err) throw err;
-    //     console.log(result);
-    //     db.close();
-    // });
-
-    // var mysort = { model: 1 };
-    // dbo.collection("cars").find().sort(mysort).toArray(function(err, result) {
-    //     if (err) throw err;
-    //     console.log(result);
-    //     db.close();
-    // });
-
-    // var myquery = {  };
-    // dbo.collection("customers").deleteOne(myquery, function(err, obj) {
-    //     if (err) throw err;
-    //     console.log("1 document deleted");
-    //     db.close();
-    // });
 
     // var myquery = {  };
     // var newvalues = {$set: {name: "Minnie"} };
