@@ -26,40 +26,43 @@ app.get('/fetch',  (req, res) => {
         var cars = db.collection('cars');
         cars.find({}).limit(10).toArray((err, result) => {
             if (err) throw err;
-            // console.log(result);
+            console.log("Fetched !!!!!!!!!!!!!!!!!!");
             res.send(result);        
         });
     })
     .catch(err => { throw err })
 })
 
-app.get('/add' , (req,res) => {
+app.post('/add' , (req,res) => {
+    console.log(req.body)
     MongoClient.connect(url)
     .then((client) => {
         var db = client.db('mydb');
         var cars = db.collection('cars');
-        myobj = 
-        cars.insertOne(myobj,(err,res) => {
+        cars.insertOne(req.obj,(err,result) => {
             if(err) throw err ;
-            console.log(res.insertedCount);
+            res.send(result);
+            console.log('Added !!!!!!!!!!!!!!!!');
+            // console.log(res.insertedCount);
         })
     })
     .catch(err => { throw err })
 })
 
-app.get('/delete', (req,res) => {
-    res.send(req.body.id);
-    // MongoClient.connect(url)
-    // .then((client) => {
-    //     var db = client.db('mydb');
-    //     var cars = db.collection('cars');
-    //     cars.deleteOne(req.body.id,(err,obj) => {
-    //         if(err) throw err ;
-    //         console.log(obj);
-    //         res.send(obj);
-    //     })
-    // })
-    // .catch(err => { throw err })
+app.post('/delete', (req,res) => {
+    MongoClient.connect(url)
+    .then((client) => {
+        var db = client.db('mydb');
+        var cars = db.collection('cars');
+        cars.deleteOne(req.id,(err,obj) => {
+            if(err) throw err ;
+            // console.log(obj);
+            console.log(res);
+            console.log("Deleted !!!!!!!!!!!!!!");
+            res.send(obj);
+        })
+    })
+    .catch(err => { throw err })
 })
 
 
